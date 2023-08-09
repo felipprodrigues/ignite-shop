@@ -58,11 +58,24 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 }) => {
   const productId = params?.id;
 
+  if (!productId) {
+    // Handle the case where productId is undefined
+    return {
+      notFound: true, // or any other appropriate response
+    };
+  }
+
   const product = await stripe.products.retrieve(productId, {
     expand: ["default_price"],
   });
 
   const price = product.default_price as Stripe.Price;
+
+  const unitAmount = price.unit_amount ?? 0;
+  const formattedPrice = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(unitAmount / 100);
 
   return {
     props: {
@@ -70,10 +83,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price.unit_amount / 100),
+        price: formattedPrice,
         description: product.description,
       },
     },
