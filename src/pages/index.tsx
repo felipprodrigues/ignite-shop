@@ -9,7 +9,7 @@ import Stripe from "stripe";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
-import { HomeContainer, Product } from "./home";
+import { HomeContainer, Product } from "../styles/pages/home";
 
 interface HomeProps {
   products: {
