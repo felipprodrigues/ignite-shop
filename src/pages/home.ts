@@ -2,7 +2,6 @@ import { styled } from "@stitches/react";
 
 export const HomeContainer = styled("main", {
   display: "flex",
-  // gap: "3rem",
   maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
   marginLeft: "auto",
   minHeight: "656",
@@ -12,7 +11,6 @@ export const HomeContainer = styled("main", {
 export const Product = styled("div", {
   background: "linear-gradient(180deg, #1ea4b3 0%, #7465d4 100%)",
   boderRadius: 8,
-  // padding: ".25rem",
   cursor: "pointer",
   position: "relative",
   overflow: "hidden",
