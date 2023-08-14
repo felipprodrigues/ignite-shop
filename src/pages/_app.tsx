@@ -5,6 +5,8 @@ import logoImg from "../assets/logo.svg";
 import { Container, Header } from "@/styles/pages/app";
 import Image from "next/image";
 
+import CartButton from "@/components/cartButton";
+
 export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
 
@@ -12,6 +14,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <Container>
       <Header>
         <Image src={logoImg} alt="" />
+
+        <CartButton />
       </Header>
 
       <Component {...pageProps} />
