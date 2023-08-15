@@ -19,15 +19,18 @@ interface HomeProps {
     imageUrl: string;
     price: string;
   }[];
+  setProductData: (param: any) => void;
 }
 
-export default function Home({ products }: HomeProps) {
+export default function Home({ products, setProductData }: HomeProps) {
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
       spacing: 48,
     },
   });
+
+  setProductData(products);
 
   return (
     <>
