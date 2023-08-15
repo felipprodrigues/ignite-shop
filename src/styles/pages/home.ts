@@ -42,15 +42,20 @@ export const Product = styled("div", {
     opacity: 0,
     transition: "all .2s ease-in-out",
 
-    strong: {
-      fontSize: "$lg",
-      color: "$gray100",
-    },
+    "& > div": {
+      display: "flex",
+      flexDirection: "column",
 
-    span: {
-      fontSize: "$xl",
-      fontWeight: "bold",
-      color: "$green300",
+      strong: {
+        fontSize: "$lg",
+        color: "$gray100",
+      },
+
+      span: {
+        fontSize: "$xl",
+        fontWeight: "bold",
+        color: "$green300",
+      },
     },
   },
 

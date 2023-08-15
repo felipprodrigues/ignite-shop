@@ -1,7 +1,7 @@
 import { styled } from "@stitches/react";
 
 export const Container = styled("div", {
-  backgroundColor: "$gray800",
+  backgroundColor: "$$bgColor",
   padding: ".75rem",
   borderRadius: "8px",
   cursor: "pointer",
@@ -10,7 +10,7 @@ export const Container = styled("div", {
   transition: "all .15s linear",
 
   svg: {
-    color: "$gray300",
+    color: "$$svgColor",
   },
 
   "&:hover": {

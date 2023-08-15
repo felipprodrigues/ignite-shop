@@ -6,19 +6,23 @@ import { Container, Header } from "@/styles/pages/app";
 import Image from "next/image";
 
 import CartButton from "@/components/cartButton";
+import Sidepanel from "@/components/sidepanel";
 
 export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
 
   return (
-    <Container>
-      <Header>
-        <Image src={logoImg} alt="" />
+    <>
+      <Sidepanel />
+      <Container>
+        <Header>
+          <Image src={logoImg} alt="" />
 
-        <CartButton />
-      </Header>
+          <CartButton color="#202024" svgColor="#e1e1e6" />
+        </Header>
 
-      <Component {...pageProps} />
-    </Container>
+        <Component {...pageProps} />
+      </Container>
+    </>
   );
 }
