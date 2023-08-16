@@ -9,20 +9,24 @@ import Stripe from "stripe";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
+import { useContext } from "react";
+import { CartContext } from "./_app";
+
 import { HomeContainer, Product } from "../styles/pages/home";
 import CartButton from "@/components/cartButton";
 
-interface HomeProps {
+export interface HomeProps {
   products: {
     id: string;
     name: string;
     imageUrl: string;
     price: string;
   }[];
-  setProductData: (param: any) => void;
 }
 
-export default function Home({ products, setProductData }: HomeProps) {
+export default function Home({ products }: HomeProps) {
+  const { setProductData } = useContext(CartContext);
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -41,13 +45,20 @@ export default function Home({ products, setProductData }: HomeProps) {
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => {
           return (
-            <Link
-              key={product.id}
-              href={`/product/${product.id}`}
-              prefetch={false}
-            >
+            <>
               <Product className="keen-slider__slide">
-                <Image src={product.imageUrl} width={520} height={480} alt="" />
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  prefetch={false}
+                >
+                  <Image
+                    src={product.imageUrl}
+                    width={520}
+                    height={480}
+                    alt=""
+                  />
+                </Link>
 
                 <footer>
                   <div>
@@ -55,10 +66,14 @@ export default function Home({ products, setProductData }: HomeProps) {
                     <span>{product.price}</span>
                   </div>
 
-                  <CartButton color="#00b37e" svgColor="#fff" />
+                  <CartButton
+                    color="#00b37e"
+                    svgColor="#fff"
+                    product={product}
+                  />
                 </footer>
               </Product>
-            </Link>
+            </>
           );
         })}
       </HomeContainer>
@@ -79,6 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
       style: "currency",
       currency: "BRL",
     }).format(unitAmount / 100);
+    console.log(product, "aqui o data");
 
     return {
       id: product.id,

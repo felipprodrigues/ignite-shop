@@ -29,6 +29,7 @@ export const Product = styled("div", {
     left: ".25rem",
     right: ".25rem",
     padding: "2rem",
+    cursor: "auto",
 
     borderRadius: 6,
 

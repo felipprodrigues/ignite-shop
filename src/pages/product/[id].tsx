@@ -6,7 +6,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 
 import {
@@ -14,6 +14,7 @@ import {
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
+import { CartContext } from "../_app";
 
 interface ProductProps {
   product: {
@@ -30,6 +31,8 @@ export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter();
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
+
+  const { handleAddItemToCart } = useContext(CartContext);
 
   if (isFallback) {
     return <p>Loading...</p>;
@@ -71,10 +74,10 @@ export default function Product({ product }: ProductProps) {
           <p>{product.description}</p>
 
           <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            // disabled={isCreatingCheckoutSession}
+            onClick={() => handleAddItemToCart(product)}
           >
-            Comprar agora
+            Colocar na sacola
           </button>
         </ProductDetails>
       </ProductContainer>

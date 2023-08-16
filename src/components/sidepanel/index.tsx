@@ -19,7 +19,7 @@ interface ProductProps {
   }[];
 }
 export default function Sidepanel() {
-  const { productData } = useContext(CartContext);
+  const { productData, removeItemFromCart, cart } = useContext(CartContext);
 
   const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -27,27 +27,32 @@ export default function Sidepanel() {
   }).format(2700 / 100);
 
   console.log(productData);
-  function handleRemoveItem() {
-    console.log("time to remove some items");
-  }
 
   function handlePurchase() {
     console.log("ok vc comprou");
   }
 
+  const { isSidepanelOpen, toggleSidepanel } = useContext(CartContext);
+
+  console.log(cart, "aquio cart");
   return (
-    <Container>
+    <Container
+      css={{
+        transform: isSidepanelOpen ? "translateX(0%)" : "translateX(100%)",
+        display: isSidepanelOpen ? "flex" : "none",
+      }}
+    >
       <div>
-        <X size={24} />
+        <X size={24} onClick={toggleSidepanel} />
       </div>
 
       <div>
         <ProductDetails>
           <h2>Sacola de compras</h2>
-          {productData.map((product) => {
+          {cart.map((product: any) => {
             return (
               <>
-                <div>
+                <div key={product.id}>
                   <ProductImage>
                     <Image
                       src={product.imageUrl}
@@ -62,7 +67,9 @@ export default function Sidepanel() {
 
                     <span>{formattedUnitPrice}</span>
 
-                    <a onClick={handleRemoveItem}>Remover</a>
+                    <a onClick={() => removeItemFromCart(product.id)}>
+                      Remover
+                    </a>
                   </ProductInfo>
                 </div>
               </>
@@ -73,7 +80,7 @@ export default function Sidepanel() {
         <ProductCheckout>
           <div>
             <span>Quantidade</span>
-            <span>3 itens</span>
+            <span>{cart.length} itens</span>
           </div>
           <div>
             <span>Valor total</span>

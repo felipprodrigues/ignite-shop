@@ -9,14 +9,14 @@ export const Container = styled("aside", {
 
   background: "$gray800",
 
-  display: "flex",
+  // display: "flex",
   flexDirection: "column",
 
   position: "absolute",
   right: 0,
   zIndex: 1,
 
-  transform: "translateX(0%)",
+  transition: "all .15s linear",
 
   "& > div:first-of-type": {
     display: "flex",
