@@ -10,7 +10,7 @@ export const HomeContainer = styled("main", {
 
 export const Product = styled("div", {
   background: "linear-gradient(180deg, #1ea4b3 0%, #7465d4 100%)",
-  boderRadius: 8,
+  borderRadius: 8,
   cursor: "pointer",
   position: "relative",
   overflow: "hidden",
@@ -29,6 +29,7 @@ export const Product = styled("div", {
     left: ".25rem",
     right: ".25rem",
     padding: "2rem",
+    cursor: "auto",
 
     borderRadius: 6,
 
