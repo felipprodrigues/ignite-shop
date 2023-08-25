@@ -14,18 +14,10 @@ import { CartContext } from "./_app";
 
 import { HomeContainer, Product } from "../styles/pages/home";
 import CartButton from "@/components/cartButton";
-
-export interface HomeProps {
-  products: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-  }[];
-}
+import { HomeProps } from "@/interfaces";
 
 export default function Home({ products }: HomeProps) {
-  const { setProductData } = useContext(CartContext);
+  const { setProductData, handleCartTotal } = useContext(CartContext);
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -70,6 +62,7 @@ export default function Home({ products }: HomeProps) {
                     color="#00b37e"
                     svgColor="#fff"
                     product={product}
+                    handleCartTotal={() => handleCartTotal(product.price)}
                   />
                 </footer>
               </Product>
@@ -94,7 +87,6 @@ export const getStaticProps: GetStaticProps = async () => {
       style: "currency",
       currency: "BRL",
     }).format(unitAmount / 100);
-    console.log(product, "aqui o data");
 
     return {
       id: product.id,
@@ -102,6 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
       imageUrl: product.images[0],
       url: product.url,
       price: formattedUnitPrice,
+      priceNumber: unitAmount,
     };
   });
 

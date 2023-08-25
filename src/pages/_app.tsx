@@ -11,23 +11,17 @@ import "react-toastify/dist/ReactToastify.css";
 import CartButton from "@/components/cartButton";
 import Sidepanel from "@/components/sidepanel";
 import {
+  Component,
   Dispatch,
   SetStateAction,
   createContext,
   useEffect,
   useState,
 } from "react";
-import { HomeProps } from ".";
-import { Handbag } from "phosphor-react";
 
-interface CartProps {
-  setProductData: Dispatch<SetStateAction<{}>>;
-  productData: object[];
-  isSidepanelOpen: boolean;
-  toggleSidepanel: () => void;
-  handleAddItemToCart: (product: HomeProps) => void;
-  removeItemFromCart: (id: string) => void;
-}
+import { Handbag } from "phosphor-react";
+import { CartProps, HomeProps } from "@/interfaces";
+import { ProductDetails } from "@/components/sidepanel/styles";
 
 export const CartContext = createContext({} as CartProps);
 
@@ -49,8 +43,18 @@ export default function App({ Component, pageProps }: AppProps) {
       toast.warning("Item already added to cart");
     } else {
       setCart((prev) => [...prev, product]);
+      toast.success("Item added to cart!");
     }
   }
+
+  function handleCartTotal(product: any) {
+    console.log(product, "aqui o producto ");
+
+    const fetchPrice = productData.map((product) => product.price);
+    // console.log(fetchPrice, "aqui");
+  }
+
+  console.log(handleCartTotal());
 
   function removeItemFromCart(id: any) {
     const updateCart = cart.filter((item) => item.id !== id);
@@ -58,9 +62,9 @@ export default function App({ Component, pageProps }: AppProps) {
     setCart(updateCart);
   }
 
-  useEffect(() => {
-    console.log(cart, "aqui");
-  }, [cart]);
+  // useEffect(() => {
+  //   console.log(cart, "aqui");
+  // }, [cart]);
 
   return (
     <CartContext.Provider
@@ -72,9 +76,10 @@ export default function App({ Component, pageProps }: AppProps) {
         handleAddItemToCart,
         cart,
         removeItemFromCart,
+        handleCartTotal,
       }}
     >
-      <ToastContainer />
+      <ToastContainer autoClose={2000} />
       <Sidepanel />
       <Container>
         <Header>

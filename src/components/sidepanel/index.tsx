@@ -7,7 +7,7 @@ import {
 } from "./styles";
 import { X } from "phosphor-react";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "@/pages/_app";
 
 interface ProductProps {
@@ -26,7 +26,7 @@ export default function Sidepanel() {
     currency: "BRL",
   }).format(2700 / 100);
 
-  console.log(productData);
+  // console.log(productData);
 
   function handlePurchase() {
     console.log("ok vc comprou");
@@ -34,7 +34,6 @@ export default function Sidepanel() {
 
   const { isSidepanelOpen, toggleSidepanel } = useContext(CartContext);
 
-  console.log(cart, "aquio cart");
   return (
     <Container
       css={{
@@ -65,7 +64,7 @@ export default function Sidepanel() {
                   <ProductInfo>
                     <span>{product.name}</span>
 
-                    <span>{formattedUnitPrice}</span>
+                    <span>{product.price}</span>
 
                     <a onClick={() => removeItemFromCart(product.id)}>
                       Remover
