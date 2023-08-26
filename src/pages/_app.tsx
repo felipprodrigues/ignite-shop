@@ -8,20 +8,13 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import CartButton from "@/components/cartButton";
+// import CartButton from "@/components/cartButton";
 import Sidepanel from "@/components/sidepanel";
-import {
-  Component,
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { Handbag } from "phosphor-react";
 import { CartProps, HomeProps } from "@/interfaces";
-import { ProductDetails } from "@/components/sidepanel/styles";
+// import { ProductDetails } from "@/components/sidepanel/styles";
 
 export const CartContext = createContext({} as CartProps);
 
@@ -47,24 +40,24 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }
 
-  function handleCartTotal(product: any) {
-    console.log(product, "aqui o producto ");
+  function handleCartTotal() {
+    const cartTotal = cart.reduce((acc, curr) => {
+      return acc + curr.priceNumber;
+    }, 0);
 
-    const fetchPrice = productData.map((product) => product.price);
-    // console.log(fetchPrice, "aqui");
+    const updatedCart = cart.map((item) => ({
+      ...item,
+      totalPrice: item.priceNumber + cartTotal,
+    }));
+
+    console.log(updatedCart, "updated cart");
   }
-
-  console.log(handleCartTotal());
 
   function removeItemFromCart(id: any) {
     const updateCart = cart.filter((item) => item.id !== id);
 
     setCart(updateCart);
   }
-
-  // useEffect(() => {
-  //   console.log(cart, "aqui");
-  // }, [cart]);
 
   return (
     <CartContext.Provider

@@ -12,6 +12,7 @@ export interface CartProps {
 }
 
 export interface HomeProps {
+  priceNumber: number;
   price: any;
   id: any;
   products: {

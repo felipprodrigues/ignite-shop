@@ -17,7 +17,7 @@ import CartButton from "@/components/cartButton";
 import { HomeProps } from "@/interfaces";
 
 export default function Home({ products }: HomeProps) {
-  const { setProductData, handleCartTotal } = useContext(CartContext);
+  const { setProductData } = useContext(CartContext);
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -62,7 +62,6 @@ export default function Home({ products }: HomeProps) {
                     color="#00b37e"
                     svgColor="#fff"
                     product={product}
-                    handleCartTotal={() => handleCartTotal(product.price)}
                   />
                 </footer>
               </Product>

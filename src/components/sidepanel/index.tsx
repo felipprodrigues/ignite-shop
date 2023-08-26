@@ -19,7 +19,8 @@ interface ProductProps {
   }[];
 }
 export default function Sidepanel() {
-  const { productData, removeItemFromCart, cart } = useContext(CartContext);
+  const { productData, removeItemFromCart, cart, handleCartPrices } =
+    useContext(CartContext);
 
   const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -49,6 +50,7 @@ export default function Sidepanel() {
         <ProductDetails>
           <h2>Sacola de compras</h2>
           {cart.map((product: any) => {
+            // console.log(product, "aqui");
             return (
               <>
                 <div key={product.id}>
@@ -83,7 +85,7 @@ export default function Sidepanel() {
           </div>
           <div>
             <span>Valor total</span>
-            <h2>{formattedUnitPrice}</h2>
+            <h2>{productData.totalPrice}</h2>
           </div>
 
           <a onClick={handlePurchase}>Finalizar compra</a>
