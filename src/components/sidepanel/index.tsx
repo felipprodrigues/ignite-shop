@@ -7,8 +7,10 @@ import {
 } from "./styles";
 import { X } from "phosphor-react";
 import Image from "next/image";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/pages/_app";
+import axios from "axios";
+import toNumber from "@/helpers/transformToNumber";
 
 interface ProductProps {
   productData: {
@@ -19,21 +21,47 @@ interface ProductProps {
   }[];
 }
 export default function Sidepanel() {
-  const { productData, removeItemFromCart, cart, handleCartPrices } =
-    useContext(CartContext);
+  const {
+    removeItemFromCart,
+    cart,
+    handleBuyProduct,
+    isCreatingCheckoutSession,
+    isSidepanelOpen,
+    toggleSidepanel,
+    cartTotalPrice,
+  } = useContext(CartContext);
 
-  const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(2700 / 100);
+  // const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
+  //   style: "currency",
+  //   currency: "BRL",
+  // }).format(2700 / 100);
 
   // console.log(productData);
 
-  function handlePurchase() {
-    console.log("ok vc comprou");
-  }
+  // async function handleBuyProduct() {
+  //   try {
+  //     setIsCreatingCheckoutSession(true);
 
-  const { isSidepanelOpen, toggleSidepanel } = useContext(CartContext);
+  //     const response = await axios.post("/api/checkout", {
+  //       priceId: product.defaultPriceId,
+  //     });
+
+  //     const { checkoutUrl } = response.data;
+
+  //     window.location.href = checkoutUrl;
+  //   } catch (err) {
+  //     setIsCreatingCheckoutSession(false);
+
+  //     alert("Falha ao redirecionar ao checkout!");
+  //   }
+  // }
+
+  // function handlePurchase() {
+  //   console.log("ok vc comprou");
+  // }
+
+  // const { isSidepanelOpen, toggleSidepanel, cartTotalPrice } =
+  //   useContext(CartContext);
 
   return (
     <Container
@@ -50,7 +78,6 @@ export default function Sidepanel() {
         <ProductDetails>
           <h2>Sacola de compras</h2>
           {cart.map((product: any) => {
-            // console.log(product, "aqui");
             return (
               <>
                 <div key={product.id}>
@@ -66,7 +93,9 @@ export default function Sidepanel() {
                   <ProductInfo>
                     <span>{product.name}</span>
 
-                    <span>{product.price}</span>
+                    <span>
+                      {product.price || toNumber(product.priceNumber)}
+                    </span>
 
                     <a onClick={() => removeItemFromCart(product.id)}>
                       Remover
@@ -85,10 +114,15 @@ export default function Sidepanel() {
           </div>
           <div>
             <span>Valor total</span>
-            <h2>{productData.totalPrice}</h2>
+            <h2>{cartTotalPrice}</h2>
           </div>
 
-          <a onClick={handlePurchase}>Finalizar compra</a>
+          <button
+            onClick={handleBuyProduct}
+            disabled={isCreatingCheckoutSession}
+          >
+            Finalizar compra
+          </button>
         </ProductCheckout>
       </div>
     </Container>

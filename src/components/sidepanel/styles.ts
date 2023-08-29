@@ -115,7 +115,7 @@ export const ProductCheckout = styled("div", {
     },
   },
 
-  "& > a": {
+  "& > button": {
     marginTop: "1.5rem",
     backgroundColor: "$green500",
     border: 0,

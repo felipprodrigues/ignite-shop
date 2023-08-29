@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { globalStyles } from "@/styles/global";
 import type { AppProps } from "next/app";
 
@@ -8,13 +9,12 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// import CartButton from "@/components/cartButton";
 import Sidepanel from "@/components/sidepanel";
 import { createContext, useEffect, useState } from "react";
 
 import { Handbag } from "phosphor-react";
 import { CartProps, HomeProps } from "@/interfaces";
-// import { ProductDetails } from "@/components/sidepanel/styles";
+import axios from "axios";
 
 export const CartContext = createContext({} as CartProps);
 
@@ -24,12 +24,42 @@ export default function App({ Component, pageProps }: AppProps) {
   const [productData, setProductData] = useState<HomeProps[]>([]);
   const [isSidepanelOpen, setIsSidepanelOpen] = useState(false);
   const [cart, setCart] = useState<HomeProps[]>([]);
+  const [cartTotalPrice, setCartTotalPrice] = useState("");
+
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false);
+  const [retrieveStripeProduct, setRetrieveStripeProduct] = useState([]);
+
+  useEffect(() => {
+    handleCartTotal();
+  }, [cart, handleCartTotal]);
+
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true);
+
+      const response = await axios.post("/api/checkout", {
+        priceId: retrieveStripeProduct.defaultPriceId,
+      });
+
+      const { checkoutUrl } = response.data;
+
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      setIsCreatingCheckoutSession(false);
+      console.log(err, "error");
+
+      alert("Falha ao redirecionar ao checkout!");
+    }
+  }
 
   function toggleSidepanel() {
     setIsSidepanelOpen(() => !isSidepanelOpen);
   }
 
   function handleAddItemToCart(product: HomeProps) {
+    console.log(product, "ta aqui");
+
     const isInCart = cart.find((item) => item.id === product.id);
 
     if (isInCart) {
@@ -37,6 +67,8 @@ export default function App({ Component, pageProps }: AppProps) {
     } else {
       setCart((prev) => [...prev, product]);
       toast.success("Item added to cart!");
+
+      handleCartTotal();
     }
   }
 
@@ -45,12 +77,12 @@ export default function App({ Component, pageProps }: AppProps) {
       return acc + curr.priceNumber;
     }, 0);
 
-    const updatedCart = cart.map((item) => ({
-      ...item,
-      totalPrice: item.priceNumber + cartTotal,
-    }));
+    const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(cartTotal / 100);
 
-    console.log(updatedCart, "updated cart");
+    setCartTotalPrice(formattedUnitPrice);
   }
 
   function removeItemFromCart(id: any) {
@@ -70,6 +102,10 @@ export default function App({ Component, pageProps }: AppProps) {
         cart,
         removeItemFromCart,
         handleCartTotal,
+        cartTotalPrice,
+        setRetrieveStripeProduct,
+        isCreatingCheckoutSession,
+        handleBuyProduct,
       }}
     >
       <ToastContainer autoClose={2000} />

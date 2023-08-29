@@ -15,13 +15,14 @@ export default function CartButton({
   svgColor,
   product,
 }: CartButtonProps) {
-  const { handleAddItemToCart, handleCartTotal } = useContext(CartContext);
+  const { handleAddItemToCart } = useContext(CartContext);
+  console.log(product, "produto aqui");
 
   return (
     <Container
       css={{ $$bgColor: color, $$svgColor: svgColor }}
       onClick={() => {
-        handleAddItemToCart(product), handleCartTotal(product);
+        handleAddItemToCart(product);
       }}
     >
       <Handbag size={24} />

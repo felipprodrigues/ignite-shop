@@ -6,8 +6,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { useContext, useState } from "react";
-import axios from "axios";
+import { useContext } from "react";
 
 import {
   ImageContainer,
@@ -15,6 +14,8 @@ import {
   ProductDetails,
 } from "@/styles/pages/product";
 import { CartContext } from "../_app";
+
+import toNumber from "@/helpers/transformToNumber";
 
 interface ProductProps {
   product: {
@@ -29,31 +30,14 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter();
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
 
-  const { handleAddItemToCart } = useContext(CartContext);
+  const { handleAddItemToCart, setRetrieveStripeProduct } =
+    useContext(CartContext);
+
+  setRetrieveStripeProduct(product);
 
   if (isFallback) {
     return <p>Loading...</p>;
-  }
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
-      });
-
-      const { checkoutUrl } = response.data;
-
-      window.location.href = checkoutUrl;
-    } catch (err) {
-      setIsCreatingCheckoutSession(false);
-
-      alert("Falha ao redirecionar ao checkout!");
-    }
   }
 
   return (
@@ -69,7 +53,7 @@ export default function Product({ product }: ProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{toNumber(product.priceNumber)}</span>
 
           <p>{product.description}</p>
 
@@ -114,10 +98,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   const price = product.default_price as Stripe.Price;
 
   const unitAmount = price.unit_amount ?? 0;
-  const formattedPrice = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(unitAmount / 100);
 
   return {
     props: {
@@ -125,7 +105,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: formattedPrice,
+        priceNumber: unitAmount,
         description: product.description,
         defaultPriceId: price.id,
       },

@@ -94,6 +94,8 @@ export const getStaticProps: GetStaticProps = async () => {
       url: product.url,
       price: formattedUnitPrice,
       priceNumber: unitAmount,
+      defaultPriceId: price.id,
+      description: product.description,
     };
   });
 

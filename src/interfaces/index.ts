@@ -9,6 +9,7 @@ export interface CartProps {
   handleAddItemToCart: (product: HomeProps) => void;
   removeItemFromCart: (id: string) => void;
   cart: object[];
+  cartTotalPrice: number;
 }
 
 export interface HomeProps {
