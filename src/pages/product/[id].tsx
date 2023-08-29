@@ -19,6 +19,7 @@ import toNumber from "@/helpers/transformToNumber";
 
 interface ProductProps {
   product: {
+    priceNumber: number;
     id: string;
     name: string;
     imageUrl: string;

@@ -15,6 +15,7 @@ import { CartContext } from "./_app";
 import { HomeContainer, Product } from "../styles/pages/home";
 import CartButton from "@/components/cartButton";
 import { HomeProps } from "@/interfaces";
+import toNumber from "@/helpers/transformToNumber";
 
 export default function Home({ products }: HomeProps) {
   const { setProductData } = useContext(CartContext);
@@ -38,9 +39,9 @@ export default function Home({ products }: HomeProps) {
         {products.map((product) => {
           return (
             <>
-              <Product className="keen-slider__slide">
+              <Product className="keen-slider__slide" key={product.id}>
                 <Link
-                  key={product.id}
+                  // key={product.id}
                   href={`/product/${product.id}`}
                   prefetch={false}
                 >
@@ -55,7 +56,7 @@ export default function Home({ products }: HomeProps) {
                 <footer>
                   <div>
                     <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <span>{toNumber(product.priceNumber)}</span>
                   </div>
 
                   <CartButton
@@ -78,24 +79,21 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ["data.default_price"],
   });
 
+  console.log(response.data, "aqui a response");
+
   const products = response.data.map((product) => {
     const price = product.default_price as Stripe.Price;
 
     const unitAmount = price.unit_amount ?? 0;
-    const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(unitAmount / 100);
 
     return {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      url: product.url,
-      price: formattedUnitPrice,
       priceNumber: unitAmount,
-      defaultPriceId: price.id,
       description: product.description,
+      defaultPriceId: price.id,
+      price: unitAmount,
     };
   });
 

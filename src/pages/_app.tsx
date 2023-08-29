@@ -15,6 +15,8 @@ import { createContext, useEffect, useState } from "react";
 import { Handbag } from "phosphor-react";
 import { CartProps, HomeProps } from "@/interfaces";
 import axios from "axios";
+import Link from "next/link";
+import toNumber from "@/helpers/transformToNumber";
 
 export const CartContext = createContext({} as CartProps);
 
@@ -38,28 +40,38 @@ export default function App({ Component, pageProps }: AppProps) {
     try {
       setIsCreatingCheckoutSession(true);
 
+      const lineItems = cart.map((item) => ({
+        priceId: item.defaultPriceId,
+        quantity: 1, // You can adjust this based on your cart logic
+      }));
+
+      console.log(lineItems, "aqqui o line");
+
       const response = await axios.post("/api/checkout", {
-        priceId: retrieveStripeProduct.defaultPriceId,
+        priceId: retrieveStripeProduct.defaultPriceId, // Send default product's priceId
+        line_items: lineItems, // Send line_items array for the rest of the cart
+        id: retrieveStripeProduct.id,
       });
+
+      console.log(response.data, "response data");
 
       const { checkoutUrl } = response.data;
 
       window.location.href = checkoutUrl;
     } catch (err) {
       setIsCreatingCheckoutSession(false);
-      console.log(err, "error");
+      console.log(err.response, "error");
 
-      alert("Falha ao redirecionar ao checkout!");
+      toast.error("Falha ao redirecionar ao checkout!");
     }
   }
 
+  console.log(cart, "qui o cart");
   function toggleSidepanel() {
     setIsSidepanelOpen(() => !isSidepanelOpen);
   }
 
   function handleAddItemToCart(product: HomeProps) {
-    console.log(product, "ta aqui");
-
     const isInCart = cart.find((item) => item.id === product.id);
 
     if (isInCart) {
@@ -77,12 +89,9 @@ export default function App({ Component, pageProps }: AppProps) {
       return acc + curr.priceNumber;
     }, 0);
 
-    const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(cartTotal / 100);
+    const formattedPrice = toNumber(cartTotal);
 
-    setCartTotalPrice(formattedUnitPrice);
+    setCartTotalPrice(formattedPrice);
   }
 
   function removeItemFromCart(id: any) {
@@ -112,7 +121,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Sidepanel />
       <Container>
         <Header>
-          <Image src={logoImg} alt="" />
+          <Link href="/">
+            <Image src={logoImg} alt="" />
+          </Link>
 
           <div onClick={() => toggleSidepanel()}>
             {cart.length ? <div>{cart.length}</div> : null}

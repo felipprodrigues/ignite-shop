@@ -7,19 +7,10 @@ import {
 } from "./styles";
 import { X } from "phosphor-react";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "@/pages/_app";
-import axios from "axios";
 import toNumber from "@/helpers/transformToNumber";
 
-interface ProductProps {
-  productData: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-  }[];
-}
 export default function Sidepanel() {
   const {
     removeItemFromCart,
@@ -30,38 +21,6 @@ export default function Sidepanel() {
     toggleSidepanel,
     cartTotalPrice,
   } = useContext(CartContext);
-
-  // const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
-  //   style: "currency",
-  //   currency: "BRL",
-  // }).format(2700 / 100);
-
-  // console.log(productData);
-
-  // async function handleBuyProduct() {
-  //   try {
-  //     setIsCreatingCheckoutSession(true);
-
-  //     const response = await axios.post("/api/checkout", {
-  //       priceId: product.defaultPriceId,
-  //     });
-
-  //     const { checkoutUrl } = response.data;
-
-  //     window.location.href = checkoutUrl;
-  //   } catch (err) {
-  //     setIsCreatingCheckoutSession(false);
-
-  //     alert("Falha ao redirecionar ao checkout!");
-  //   }
-  // }
-
-  // function handlePurchase() {
-  //   console.log("ok vc comprou");
-  // }
-
-  // const { isSidepanelOpen, toggleSidepanel, cartTotalPrice } =
-  //   useContext(CartContext);
 
   return (
     <Container
@@ -94,7 +53,7 @@ export default function Sidepanel() {
                     <span>{product.name}</span>
 
                     <span>
-                      {product.price || toNumber(product.priceNumber)}
+                      {toNumber(product.price) || toNumber(product.priceNumber)}
                     </span>
 
                     <a onClick={() => removeItemFromCart(product.id)}>
@@ -110,7 +69,7 @@ export default function Sidepanel() {
         <ProductCheckout>
           <div>
             <span>Quantidade</span>
-            <span>{cart.length} itens</span>
+            <span>{cart.length} items</span>
           </div>
           <div>
             <span>Valor total</span>

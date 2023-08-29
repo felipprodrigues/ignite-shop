@@ -2,13 +2,8 @@ import { Handbag } from "phosphor-react";
 import { Container } from "./styles";
 import { useContext } from "react";
 import { CartContext } from "@/pages/_app";
-import { HomeProps } from "@/pages";
 
-interface CartButtonProps {
-  color: string;
-  svgColor: string;
-  product?: HomeProps | undefined;
-}
+import { CartButtonProps } from "@/interfaces";
 
 export default function CartButton({
   color,
@@ -16,7 +11,6 @@ export default function CartButton({
   product,
 }: CartButtonProps) {
   const { handleAddItemToCart } = useContext(CartContext);
-  console.log(product, "produto aqui");
 
   return (
     <Container
