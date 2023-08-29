@@ -7,32 +7,20 @@ import {
 } from "./styles";
 import { X } from "phosphor-react";
 import Image from "next/image";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { CartContext } from "@/pages/_app";
+import toNumber from "@/helpers/transformToNumber";
 
-interface ProductProps {
-  productData: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-  }[];
-}
 export default function Sidepanel() {
-  const { productData, removeItemFromCart, cart } = useContext(CartContext);
-
-  const formattedUnitPrice = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(2700 / 100);
-
-  // console.log(productData);
-
-  function handlePurchase() {
-    console.log("ok vc comprou");
-  }
-
-  const { isSidepanelOpen, toggleSidepanel } = useContext(CartContext);
+  const {
+    removeItemFromCart,
+    cart,
+    handleBuyProduct,
+    isCreatingCheckoutSession,
+    isSidepanelOpen,
+    toggleSidepanel,
+    cartTotalPrice,
+  } = useContext(CartContext);
 
   return (
     <Container
@@ -64,7 +52,9 @@ export default function Sidepanel() {
                   <ProductInfo>
                     <span>{product.name}</span>
 
-                    <span>{product.price}</span>
+                    <span>
+                      {toNumber(product.price) || toNumber(product.priceNumber)}
+                    </span>
 
                     <a onClick={() => removeItemFromCart(product.id)}>
                       Remover
@@ -79,14 +69,19 @@ export default function Sidepanel() {
         <ProductCheckout>
           <div>
             <span>Quantidade</span>
-            <span>{cart.length} itens</span>
+            <span>{cart.length} items</span>
           </div>
           <div>
             <span>Valor total</span>
-            <h2>{formattedUnitPrice}</h2>
+            <h2>{cartTotalPrice}</h2>
           </div>
 
-          <a onClick={handlePurchase}>Finalizar compra</a>
+          <button
+            onClick={handleBuyProduct}
+            disabled={isCreatingCheckoutSession}
+          >
+            Finalizar compra
+          </button>
         </ProductCheckout>
       </div>
     </Container>

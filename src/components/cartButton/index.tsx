@@ -2,13 +2,8 @@ import { Handbag } from "phosphor-react";
 import { Container } from "./styles";
 import { useContext } from "react";
 import { CartContext } from "@/pages/_app";
-import { HomeProps } from "@/pages";
 
-interface CartButtonProps {
-  color: string;
-  svgColor: string;
-  product?: HomeProps | undefined;
-}
+import { CartButtonProps } from "@/interfaces";
 
 export default function CartButton({
   color,
@@ -20,7 +15,9 @@ export default function CartButton({
   return (
     <Container
       css={{ $$bgColor: color, $$svgColor: svgColor }}
-      onClick={() => handleAddItemToCart(product)}
+      onClick={() => {
+        handleAddItemToCart(product);
+      }}
     >
       <Handbag size={24} />
     </Container>
