@@ -1,25 +1,22 @@
-// import { HomeProps } from "@/pages";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface CartProps {
-  setProductData: Dispatch<SetStateAction<{}>>;
+  setProductData: React.Dispatch<React.SetStateAction<any[]>>;
   productData: object[];
   isSidepanelOpen: boolean;
   toggleSidepanel: () => void;
   handleAddItemToCart: (product: HomeProps) => void;
   removeItemFromCart: (id: string) => void;
   cart: object[];
-  cartTotalPrice: number;
+  cartTotalPrice: string;
   handleBuyProduct: () => void;
   isCreatingCheckoutSession: boolean;
 }
 
 export interface HomeProps {
-  defaultPriceId: any;
-  priceId: any;
-  priceNumber: number;
-  price: any;
+  price: number;
   id: any;
+  priceId: any;
   products: {
     formattedPrice: ReactNode;
     id: string;
@@ -31,9 +28,19 @@ export interface HomeProps {
 }
 
 export interface CartButtonProps {
+  id: any;
   color: string;
   svgColor: string;
-  product?: HomeProps | undefined;
+  product?:
+    | {
+        formattedPrice?: ReactNode;
+        id?: string;
+        name?: string;
+        imageUrl?: string;
+        price?: number;
+        priceNumber?: any;
+      }
+    | undefined;
 }
 
 export interface SuccessProps {
@@ -41,5 +48,17 @@ export interface SuccessProps {
   product: {
     name: string;
     imageUrl: string;
+  };
+}
+
+export interface ProductProps {
+  product: {
+    priceNumber: number;
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+    description: string;
+    priceId: string;
   };
 }

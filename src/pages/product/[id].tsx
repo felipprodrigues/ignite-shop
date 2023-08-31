@@ -1,47 +1,38 @@
-import { stripe } from "@/lib/stripe";
-import Stripe from "stripe";
-
+import { useContext } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { useContext } from "react";
+// Lib
+import { stripe } from "@/lib/stripe";
+import Stripe from "stripe";
 
+// Styles
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
+
+// Components
 import { CartContext } from "../_app";
 
+// Helpers
 import toNumber from "@/helpers/transformToNumber";
 
-interface ProductProps {
-  product: {
-    priceNumber: number;
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: number;
-    description: string;
-    priceId: string;
-  };
-}
+// Interfaces
+import { ProductProps } from "@/interfaces";
 
 export default function Product({ product }: ProductProps) {
-  const { isFallback } = useRouter();
-
-  const { handleAddItemToCart, setRetrieveStripeProduct } =
+  const { handleAddItemToCart, isCreatingCheckoutSession } =
     useContext(CartContext);
 
-  setRetrieveStripeProduct(product);
+  const { isFallback } = useRouter();
 
   if (isFallback) {
     return <p>Loading...</p>;
   }
-
-  console.log(product.priceId);
 
   return (
     <>
@@ -61,7 +52,7 @@ export default function Product({ product }: ProductProps) {
           <p>{product.description}</p>
 
           <button
-            // disabled={isCreatingCheckoutSession}
+            disabled={isCreatingCheckoutSession}
             onClick={() => handleAddItemToCart(product)}
           >
             Colocar na sacola
@@ -73,7 +64,7 @@ export default function Product({ product }: ProductProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // buscar os produtos mais vendidos / mais acessados
+  // find best sellers / most viewed ones
   return {
     paths: [],
     fallback: true,
@@ -84,8 +75,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   params,
 }) => {
   const productId = params?.id;
-
-  // console.log(params, "aqui os params");
 
   if (!productId) {
     return {
@@ -101,9 +90,6 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   });
 
   const price = product.default_price as Stripe.Price;
-
-  // const unitAmount = price.unit_amount ?? 0;
-  console.log(price.id, "aqui o price");
 
   return {
     props: {

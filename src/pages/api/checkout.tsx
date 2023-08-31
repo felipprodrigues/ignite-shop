@@ -7,7 +7,7 @@ export default async function handler(
 ) {
   const { priceId, line_items } = req.body;
 
-  console.log(priceId, "aqui o priceId");
+  // console.log(priceId, "aqui o priceId");
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed." });

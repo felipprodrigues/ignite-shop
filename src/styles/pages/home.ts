@@ -1,11 +1,22 @@
 import { styled } from "@stitches/react";
 
-export const HomeContainer = styled("main", {
+export const MainHolder = styled("main", {
   display: "flex",
+  flexDirection: "column",
+  gap: "2rem",
+
   maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
   marginLeft: "auto",
   minHeight: "656",
   width: "100%",
+});
+
+export const HomeContainer = styled("div", {
+  // display: "flex",
+  // maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
+  // marginLeft: "auto",
+  // minHeight: "656",
+  // width: "100%",
 });
 
 export const Product = styled("div", {
