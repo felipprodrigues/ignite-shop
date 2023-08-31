@@ -1,36 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { globalStyles } from "@/styles/global";
+import { createContext, useEffect, useState } from "react";
 import type { AppProps } from "next/app";
-
-import logoImg from "../assets/logo.svg";
-import { Container, Header } from "@/styles/pages/app";
 import Image from "next/image";
+import Link from "next/link";
+import axios from "axios";
 
+// Components
+import Sidepanel from "@/components/sidepanel";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Sidepanel from "@/components/sidepanel";
-import { createContext, useEffect, useState } from "react";
+// Styles
+import { globalStyles } from "@/styles/global";
+import { Container, Header } from "@/styles/pages/app";
 
-import { Handbag } from "phosphor-react";
+// Interfaces
 import { CartProps, HomeProps } from "@/interfaces";
-import axios from "axios";
-import Link from "next/link";
+
+// Helpers
 import toNumber from "@/helpers/transformToNumber";
+
+// Images
+import logoImg from "../assets/logo.svg";
+import { Handbag } from "phosphor-react";
 
 export const CartContext = createContext({} as CartProps);
 
 export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
 
-  const [productData, setProductData] = useState<HomeProps[]>([]);
+  const [productData, setProductData] = useState([]);
   const [isSidepanelOpen, setIsSidepanelOpen] = useState(false);
   const [cart, setCart] = useState<HomeProps[]>([]);
   const [cartTotalPrice, setCartTotalPrice] = useState("");
 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
-  const [retrieveStripeProduct, setRetrieveStripeProduct] = useState([]);
 
   useEffect(() => {
     handleCartTotal();
@@ -41,34 +46,25 @@ export default function App({ Component, pageProps }: AppProps) {
       setIsCreatingCheckoutSession(true);
 
       const lineItems = cart.map((item) => ({
-        priceId: item.defaultPriceId,
-        quantity: 1, // You can adjust this based on your cart logic
+        priceId: item.priceId,
+        quantity: 1,
       }));
 
-      console.log(lineItems, "aqqui o line");
+      const productsPriceId = cart.map((product) => product.priceId);
 
       const response = await axios.post("/api/checkout", {
-        priceId: retrieveStripeProduct.defaultPriceId, // Send default product's priceId
+        priceId: productsPriceId, // Send default product's priceId
         line_items: lineItems, // Send line_items array for the rest of the cart
-        id: retrieveStripeProduct.id,
       });
-
-      console.log(response.data, "response data");
 
       const { checkoutUrl } = response.data;
 
       window.location.href = checkoutUrl;
     } catch (err) {
       setIsCreatingCheckoutSession(false);
-      console.log(err.response, "error");
 
-      toast.error("Falha ao redirecionar ao checkout!");
+      toast.error("Fail to redirect to checkout!");
     }
-  }
-
-  console.log(cart, "qui o cart");
-  function toggleSidepanel() {
-    setIsSidepanelOpen(() => !isSidepanelOpen);
   }
 
   function handleAddItemToCart(product: HomeProps) {
@@ -86,7 +82,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   function handleCartTotal() {
     const cartTotal = cart.reduce((acc, curr) => {
-      return acc + curr.priceNumber;
+      return acc + curr.price;
     }, 0);
 
     const formattedPrice = toNumber(cartTotal);
@@ -98,6 +94,10 @@ export default function App({ Component, pageProps }: AppProps) {
     const updateCart = cart.filter((item) => item.id !== id);
 
     setCart(updateCart);
+  }
+
+  function toggleSidepanel() {
+    setIsSidepanelOpen(() => !isSidepanelOpen);
   }
 
   return (
@@ -112,7 +112,6 @@ export default function App({ Component, pageProps }: AppProps) {
         removeItemFromCart,
         handleCartTotal,
         cartTotalPrice,
-        setRetrieveStripeProduct,
         isCreatingCheckoutSession,
         handleBuyProduct,
       }}
