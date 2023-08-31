@@ -18,7 +18,7 @@ import { HomeProps } from "@/interfaces";
 import toNumber from "@/helpers/transformToNumber";
 
 export default function Home({ products }: HomeProps) {
-  const { setProductData } = useContext(CartContext);
+  const { setProductData, productData } = useContext(CartContext);
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -29,6 +29,7 @@ export default function Home({ products }: HomeProps) {
 
   setProductData(products);
 
+  // console.log(products, "aqui");
   return (
     <>
       <Head>
@@ -36,6 +37,7 @@ export default function Home({ products }: HomeProps) {
       </Head>
 
       <HomeContainer ref={sliderRef} className="keen-slider">
+        {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
         {products.map((product) => {
           return (
             <>
@@ -56,7 +58,7 @@ export default function Home({ products }: HomeProps) {
                 <footer>
                   <div>
                     <strong>{product.name}</strong>
-                    <span>{toNumber(product.priceNumber)}</span>
+                    <span>{toNumber(product.price)}</span>
                   </div>
 
                   <CartButton
@@ -79,27 +81,22 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ["data.default_price"],
   });
 
-  console.log(response.data, "aqui a response");
+  console.log(response, "resposta da request");
 
   const products = response.data.map((product) => {
-    const price = product.default_price as Stripe.Price;
-
-    const unitAmount = price.unit_amount ?? 0;
+    const priceId = product.default_price as Stripe.Price;
 
     return {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      priceNumber: unitAmount,
       description: product.description,
-      defaultPriceId: price.id,
-      price: unitAmount,
+      priceId: priceId.id,
+      price: priceId.unit_amount,
     };
   });
 
   return {
-    props: {
-      products,
-    },
+    props: { products },
   };
 };

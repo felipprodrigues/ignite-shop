@@ -23,10 +23,10 @@ export const CartContext = createContext({} as CartProps);
 export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
 
-  const [productData, setProductData] = useState<HomeProps[]>([]);
+  const [productData, setProductData] = useState([]);
   const [isSidepanelOpen, setIsSidepanelOpen] = useState(false);
   const [cart, setCart] = useState<HomeProps[]>([]);
-  const [cartTotalPrice, setCartTotalPrice] = useState("");
+  const [cartTotalPrice, setCartTotalPrice] = useState(0);
 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
     useState(false);
@@ -41,19 +41,16 @@ export default function App({ Component, pageProps }: AppProps) {
       setIsCreatingCheckoutSession(true);
 
       const lineItems = cart.map((item) => ({
-        priceId: item.defaultPriceId,
-        quantity: 1, // You can adjust this based on your cart logic
+        priceId: item.priceId,
+        quantity: 1,
       }));
 
-      console.log(lineItems, "aqqui o line");
+      const productsPriceId = cart.map((product) => product.priceId);
 
       const response = await axios.post("/api/checkout", {
-        priceId: retrieveStripeProduct.defaultPriceId, // Send default product's priceId
+        priceId: productsPriceId, // Send default product's priceId
         line_items: lineItems, // Send line_items array for the rest of the cart
-        id: retrieveStripeProduct.id,
       });
-
-      console.log(response.data, "response data");
 
       const { checkoutUrl } = response.data;
 
@@ -74,6 +71,8 @@ export default function App({ Component, pageProps }: AppProps) {
   function handleAddItemToCart(product: HomeProps) {
     const isInCart = cart.find((item) => item.id === product.id);
 
+    console.log(product, "aqui o item");
+
     if (isInCart) {
       toast.warning("Item already added to cart");
     } else {
@@ -86,7 +85,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   function handleCartTotal() {
     const cartTotal = cart.reduce((acc, curr) => {
-      return acc + curr.priceNumber;
+      return acc + curr.price;
     }, 0);
 
     const formattedPrice = toNumber(cartTotal);

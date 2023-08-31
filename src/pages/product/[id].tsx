@@ -23,9 +23,9 @@ interface ProductProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
     description: string;
-    defaultPriceId: string;
+    priceId: string;
   };
 }
 
@@ -41,6 +41,8 @@ export default function Product({ product }: ProductProps) {
     return <p>Loading...</p>;
   }
 
+  console.log(product.priceId);
+
   return (
     <>
       <Head>
@@ -54,7 +56,7 @@ export default function Product({ product }: ProductProps) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{toNumber(product.priceNumber)}</span>
+          <span>{toNumber(product.price)}</span>
 
           <p>{product.description}</p>
 
@@ -83,6 +85,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 }) => {
   const productId = params?.id;
 
+  // console.log(params, "aqui os params");
+
   if (!productId) {
     return {
       redirect: {
@@ -98,7 +102,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
 
   const price = product.default_price as Stripe.Price;
 
-  const unitAmount = price.unit_amount ?? 0;
+  // const unitAmount = price.unit_amount ?? 0;
+  console.log(price.id, "aqui o price");
 
   return {
     props: {
@@ -106,9 +111,9 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        priceNumber: unitAmount,
+        price: price.unit_amount,
         description: product.description,
-        defaultPriceId: price.id,
+        priceId: price.id,
       },
     },
     revalidate: 60 * 60 * 1, // 1 hour

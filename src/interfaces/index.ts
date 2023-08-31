@@ -1,4 +1,4 @@
-import { HomeProps } from "@/pages";
+// import { HomeProps } from "@/pages";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface CartProps {
@@ -10,6 +10,8 @@ export interface CartProps {
   removeItemFromCart: (id: string) => void;
   cart: object[];
   cartTotalPrice: number;
+  handleBuyProduct: () => void;
+  isCreatingCheckoutSession: boolean;
 }
 
 export interface HomeProps {
@@ -23,7 +25,7 @@ export interface HomeProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
     priceNumber: any;
   }[];
 }

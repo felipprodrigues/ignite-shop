@@ -52,9 +52,7 @@ export default function Sidepanel() {
                   <ProductInfo>
                     <span>{product.name}</span>
 
-                    <span>
-                      {toNumber(product.price) || toNumber(product.priceNumber)}
-                    </span>
+                    <span>{toNumber(product.price)}</span>
 
                     <a onClick={() => removeItemFromCart(product.id)}>
                       Remover
