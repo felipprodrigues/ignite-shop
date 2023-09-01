@@ -18,6 +18,7 @@ export interface HomeProps {
   id: any;
   priceId: any;
   products: {
+    nameId: string;
     formattedPrice: ReactNode;
     id: string;
     name: string;
@@ -60,5 +61,6 @@ export interface ProductProps {
     price: number;
     description: string;
     priceId: string;
+    nameId: string;
   };
 }

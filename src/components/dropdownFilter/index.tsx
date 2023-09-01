@@ -5,9 +5,9 @@ export default function DropdownFilter() {
     <Container>
       <select name="filterSelect" id="filterSelect">
         <option value="all">All</option>
-        <option value="item1">Item1</option>
-        <option value="item1">Item2</option>
-        <option value="item1">Item3</option>
+        <option value="item1">Shirts</option>
+        <option value="item1">Hoodies</option>
+        <option value="item1">Pants</option>
       </select>
     </Container>
   );
