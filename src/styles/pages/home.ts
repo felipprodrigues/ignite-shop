@@ -11,13 +11,18 @@ export const MainHolder = styled("main", {
   width: "100%",
 });
 
-export const HomeContainer = styled("div", {
-  // display: "flex",
-  // maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
-  // marginLeft: "auto",
-  // minHeight: "656",
-  // width: "100%",
+export const HomeWrapper = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+
+  gap: "1.5rem",
+
+  h2: {
+    color: "$gray500",
+  },
 });
+
+export const HomeContainer = styled("div", {});
 
 export const Product = styled("div", {
   background: "linear-gradient(180deg, #1ea4b3 0%, #7465d4 100%)",
