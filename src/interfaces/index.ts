@@ -11,6 +11,7 @@ export interface CartProps {
   cartTotalPrice: string;
   handleBuyProduct: () => void;
   isCreatingCheckoutSession: boolean;
+  handleCartTotal: () => void;
 }
 
 export interface HomeProps {
@@ -32,16 +33,7 @@ export interface CartButtonProps {
   id: any;
   color: string;
   svgColor: string;
-  product?:
-    | {
-        formattedPrice?: ReactNode;
-        id?: string;
-        name?: string;
-        imageUrl?: string;
-        price?: number;
-        priceNumber?: any;
-      }
-    | undefined;
+  product?: ProductProps;
 }
 
 export interface SuccessProps {
@@ -53,14 +45,17 @@ export interface SuccessProps {
 }
 
 export interface ProductProps {
-  product: {
-    priceNumber: number;
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: number;
-    description: string;
-    priceId: string;
-    nameId: string;
-  };
+  priceNumber: number;
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description: string;
+  priceId: string;
+  nameId: string;
+}
+
+export interface DropdownFilterProps {
+  setSelectedFilter: (filter: string) => void;
+  selectedFilter: string;
 }

@@ -1,14 +1,36 @@
+import { DropdownFilterProps } from "@/interfaces";
 import { Container } from "./styles";
+import { Funnel } from "phosphor-react";
 
-export default function DropdownFilter() {
+export default function DropdownFilter({
+  setSelectedFilter,
+  selectedFilter,
+}: DropdownFilterProps) {
   return (
     <Container>
-      <select name="filterSelect" id="filterSelect">
-        <option value="all">All</option>
-        <option value="item1">Shirts</option>
-        <option value="item1">Hoodies</option>
-        <option value="item1">Pants</option>
-      </select>
+      <div>
+        <Funnel size={18} />
+
+        <select
+          name="filterSelect"
+          id="filterSelect"
+          onChange={(e) => setSelectedFilter(e.target.value)}
+          value={selectedFilter}
+        >
+          <option value="all" id="all">
+            All
+          </option>
+          <option value="shirt" id="shirt">
+            Shirts
+          </option>
+          <option value="hoodie" id="hoodie">
+            Hoodies
+          </option>
+          <option value="pants" id="pants">
+            Pants
+          </option>
+        </select>
+      </div>
     </Container>
   );
 }

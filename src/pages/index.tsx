@@ -13,12 +13,14 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { CartContext } from "./_app";
 import CartButton from "@/components/cartButton";
+import DropdownFilter from "@/components/dropdownFilter";
 
 // Interfaces
 import { HomeProps } from "@/interfaces";
 
 // Helpers
 import toNumber from "@/helpers/transformToNumber";
+import { Capitalize } from "@/helpers/capitalize";
 
 // Styles
 import {
@@ -27,12 +29,10 @@ import {
   MainHolder,
   Product,
 } from "../styles/pages/home";
-import DropdownFilter from "@/components/dropdownFilter";
 
 export default function Home({ products }: HomeProps) {
   const { setProductData } = useContext(CartContext);
-
-  const [shirts, setShirts] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   const [sliderRef] = useKeenSlider({
     slides: {
@@ -44,7 +44,6 @@ export default function Home({ products }: HomeProps) {
   useEffect(() => {
     setProductData(products);
 
-    console.log(shirts, "auqi");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, setProductData]);
 
@@ -56,72 +55,24 @@ export default function Home({ products }: HomeProps) {
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
-      <DropdownFilter />
+      <DropdownFilter
+        setSelectedFilter={setSelectedFilter}
+        selectedFilter={selectedFilter}
+      />
 
       <MainHolder>
         {flattenedAndUniqueArray.map((nameId) => {
-          // Filter products that match the current nameId
-          const filteredProducts = products.filter(
-            (product) => product.nameId === nameId
+          const groupedProducts = products.filter((product) =>
+            product.nameId.includes(nameId)
           );
-          console.log(`Filtered products for ${nameId}: `, filteredProducts);
 
-          return (
-            <div key={nameId}>
-              <HomeWrapper id="">
-                <h2>{nameId}</h2>
-                <HomeContainer ref={sliderRef} className="keen-slider">
-                  {products.map((product) => {
-                    return (
-                      <>
-                        <Product
-                          className="keen-slider__slide"
-                          key={product.id}
-                        >
-                          <Link
-                            href={`/product/${product.id}`}
-                            prefetch={false}
-                          >
-                            <Image
-                              src={product.imageUrl}
-                              width={520}
-                              height={480}
-                              alt=""
-                            />
-                          </Link>
-
-                          <footer>
-                            <div>
-                              <strong>{product.name}</strong>
-                              <span>{toNumber(product.price)}</span>
-                            </div>
-
-                            <CartButton
-                              color="#00b37e"
-                              svgColor="#fff"
-                              product={product}
-                              id={undefined}
-                            />
-                          </footer>
-                        </Product>
-                      </>
-                    );
-                  })}
-                </HomeContainer>
-              </HomeWrapper>
-            </div>
-          );
-        })}
-      </MainHolder>
-      {/* <MainHolder>
-        <HomeWrapper id="">
-          {nameRow.includes("shirt") && (
-            <>
-              <h2>Shirts</h2>
-              <HomeContainer ref={sliderRef} className="keen-slider">
-                {products.map((product) => {
-                  return (
-                    <>
+          if (selectedFilter === "all" || nameId === selectedFilter) {
+            return (
+              <div key={nameId}>
+                <HomeWrapper id="">
+                  <h2>{Capitalize(nameId)}</h2>
+                  <HomeContainer ref={sliderRef} className="keen-slider">
+                    {groupedProducts.map((product) => (
                       <Product className="keen-slider__slide" key={product.id}>
                         <Link href={`/product/${product.id}`} prefetch={false}>
                           <Image
@@ -146,14 +97,14 @@ export default function Home({ products }: HomeProps) {
                           />
                         </footer>
                       </Product>
-                    </>
-                  );
-                })}
-              </HomeContainer>
-            </>
-          )}
-        </HomeWrapper>
-      </MainHolder> */}
+                    ))}
+                  </HomeContainer>
+                </HomeWrapper>
+              </div>
+            );
+          }
+        })}
+      </MainHolder>
     </>
   );
 }
@@ -166,9 +117,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const products = response.data.map((product) => {
     const priceId = product.default_price as Stripe.Price;
 
-    const nameId = product?.features.map((item: string) => item?.name);
+    const nameId = product.features.map((item: any) => item?.name);
 
-    // features: [ { name: 'hoodie' } ],
     return {
       id: product.id,
       name: product.name,

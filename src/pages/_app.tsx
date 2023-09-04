@@ -29,7 +29,7 @@ export const CartContext = createContext({} as CartProps);
 export default function App({ Component, pageProps }: AppProps) {
   globalStyles();
 
-  const [productData, setProductData] = useState([]);
+  const [productData, setProductData] = useState<HomeProps[]>([]);
   const [isSidepanelOpen, setIsSidepanelOpen] = useState(false);
   const [cart, setCart] = useState<HomeProps[]>([]);
   const [cartTotalPrice, setCartTotalPrice] = useState("");
