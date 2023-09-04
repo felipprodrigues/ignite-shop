@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { stripe } from "@/lib/stripe";
+import { stripe } from "../../lib/stripe";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { priceId, line_items } = req.body;
-
-  // console.log(priceId, "aqui o priceId");
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed." });

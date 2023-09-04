@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
 import { createContext, useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import Image from "next/image";
@@ -6,19 +7,19 @@ import Link from "next/link";
 import axios from "axios";
 
 // Components
-import Sidepanel from "@/components/sidepanel";
+import Sidepanel from "../components/sidepanel";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Styles
-import { globalStyles } from "@/styles/global";
-import { Container, Header } from "@/styles/pages/app";
+import { globalStyles } from "../styles/global";
+import { Container, Header } from "../styles/pages/app";
 
 // Interfaces
-import { CartProps, HomeProps } from "@/interfaces";
+import { CartProps, HomeProps, ProductProps } from "../interfaces";
 
 // Helpers
-import toNumber from "@/helpers/transformToNumber";
+import toNumber from "../helpers/transformToNumber";
 
 // Images
 import logoImg from "../assets/logo.svg";
@@ -31,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [productData, setProductData] = useState<HomeProps[]>([]);
   const [isSidepanelOpen, setIsSidepanelOpen] = useState(false);
-  const [cart, setCart] = useState<HomeProps[]>([]);
+  const [cart, setCart] = useState<ProductProps[]>([]);
   const [cartTotalPrice, setCartTotalPrice] = useState("");
 
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
@@ -67,7 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }
 
-  function handleAddItemToCart(product: HomeProps) {
+  function handleAddItemToCart(product: ProductProps) {
     const isInCart = cart.find((item) => item.id === product.id);
 
     if (isInCart) {

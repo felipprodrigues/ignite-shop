@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
@@ -5,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 // Lib
-import { stripe } from "@/lib/stripe";
+import { stripe } from "../../lib/stripe";
 import Stripe from "stripe";
 
 // Styles
@@ -13,18 +14,18 @@ import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
-} from "@/styles/pages/product";
+} from "../../styles/pages/product";
 
 // Components
 import { CartContext } from "../_app";
 
 // Helpers
-import toNumber from "@/helpers/transformToNumber";
+import toNumber from "../../helpers/transformToNumber";
 
 // Interfaces
-import { ProductProps } from "@/interfaces";
+// import { HomeProps } from "../../interfaces";
 
-export default function Product({ product }: ProductProps) {
+export default function Product({ product }: any) {
   const { handleAddItemToCart, isCreatingCheckoutSession } =
     useContext(CartContext);
 
