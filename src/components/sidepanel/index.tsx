@@ -1,3 +1,7 @@
+import React from "react";
+import Image from "next/image";
+import { useContext } from "react";
+
 import {
   Container,
   ProductCheckout,
@@ -5,11 +9,12 @@ import {
   ProductImage,
   ProductInfo,
 } from "./styles";
+
 import { X } from "phosphor-react";
-import Image from "next/image";
-import { useContext } from "react";
-import { CartContext } from "@/pages/_app";
-import toNumber from "@/helpers/transformToNumber";
+
+import { CartContext } from "../../pages/_app";
+
+import toNumber from "../../helpers/transformToNumber";
 
 export default function Sidepanel() {
   const {

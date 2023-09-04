@@ -1,11 +1,11 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { ReactNode } from "react";
 
 export interface CartProps {
   setProductData: React.Dispatch<React.SetStateAction<any[]>>;
   productData: object[];
   isSidepanelOpen: boolean;
   toggleSidepanel: () => void;
-  handleAddItemToCart: (product: HomeProps) => void;
+  handleAddItemToCart: (product: ProductProps) => void;
   removeItemFromCart: (id: string) => void;
   cart: object[];
   cartTotalPrice: string;
@@ -45,14 +45,13 @@ export interface SuccessProps {
 }
 
 export interface ProductProps {
-  priceNumber: number;
   id: string;
   name: string;
+  nameId: string;
   imageUrl: string;
-  price: number;
   description: string;
   priceId: string;
-  nameId: string;
+  price: number;
 }
 
 export interface DropdownFilterProps {

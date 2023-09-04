@@ -1,4 +1,5 @@
-import { DropdownFilterProps } from "@/interfaces";
+import React from "react";
+import { DropdownFilterProps } from "../../interfaces";
 import { Container } from "./styles";
 import { Funnel } from "phosphor-react";
 

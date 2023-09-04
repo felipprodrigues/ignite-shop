@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import Image from "next/image";
@@ -12,15 +13,15 @@ import Stripe from "stripe";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { CartContext } from "./_app";
-import CartButton from "@/components/cartButton";
-import DropdownFilter from "@/components/dropdownFilter";
+import CartButton from "../components/cartButton";
+import DropdownFilter from "../components/dropdownFilter";
 
 // Interfaces
-import { HomeProps } from "@/interfaces";
+import { HomeProps } from "../interfaces";
 
 // Helpers
-import toNumber from "@/helpers/transformToNumber";
-import { Capitalize } from "@/helpers/capitalize";
+import toNumber from "../helpers/transformToNumber";
+import { Capitalize } from "../helpers/capitalize";
 
 // Styles
 import {
@@ -111,13 +112,13 @@ export default function Home({ products }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
+    limit: 100,
     expand: ["data.default_price"],
   });
 
-  const products = response.data.map((product) => {
-    const priceId = product.default_price as Stripe.Price;
-
-    const nameId = product.features.map((item: any) => item?.name);
+  const products = response.data.map((product: any) => {
+    const priceId = product.default_price as unknown as Stripe.Price;
+    const nameId = product.features.map((item: any) => item.name);
 
     return {
       id: product.id,
