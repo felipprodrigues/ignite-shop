@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,6 +32,8 @@ import DropdownFilter from "@/components/dropdownFilter";
 export default function Home({ products }: HomeProps) {
   const { setProductData } = useContext(CartContext);
 
+  const [shirts, setShirts] = useState([]);
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -41,27 +43,33 @@ export default function Home({ products }: HomeProps) {
 
   useEffect(() => {
     setProductData(products);
-    console.log(products.map((product) => product.nameId));
+
+    console.log(shirts, "auqi");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, setProductData]);
 
-  const uniqueNameIds = Array.from(
-    new Set(products.map((product) => product.nameId))
-  );
+  const productTags = products.map((product) => product.nameId);
+  const flattenedAndUniqueArray = [...new Set(productTags.flat())];
 
   return (
     <>
       <Head>
         <title>Home | Ignite Shop</title>
       </Head>
-
       <DropdownFilter />
 
       <MainHolder>
-        {products.map((product) => (
-          <div key={product.id}>
-            {product.nameId.includes("shirt") && (
+        {flattenedAndUniqueArray.map((nameId) => {
+          // Filter products that match the current nameId
+          const filteredProducts = products.filter(
+            (product) => product.nameId === nameId
+          );
+          console.log(`Filtered products for ${nameId}: `, filteredProducts);
+
+          return (
+            <div key={nameId}>
               <HomeWrapper id="">
-                <h2>Shirts</h2>
+                <h2>{nameId}</h2>
                 <HomeContainer ref={sliderRef} className="keen-slider">
                   {products.map((product) => {
                     return (
@@ -101,97 +109,9 @@ export default function Home({ products }: HomeProps) {
                   })}
                 </HomeContainer>
               </HomeWrapper>
-            )}
-
-            {product.nameId.includes("pants") && (
-              <HomeWrapper id="">
-                <h2>Pants</h2>
-                <HomeContainer ref={sliderRef} className="keen-slider">
-                  {products.map((product) => {
-                    return (
-                      <>
-                        <Product
-                          className="keen-slider__slide"
-                          key={product.id}
-                        >
-                          <Link
-                            href={`/product/${product.id}`}
-                            prefetch={false}
-                          >
-                            <Image
-                              src={product.imageUrl}
-                              width={520}
-                              height={480}
-                              alt=""
-                            />
-                          </Link>
-
-                          <footer>
-                            <div>
-                              <strong>{product.name}</strong>
-                              <span>{toNumber(product.price)}</span>
-                            </div>
-
-                            <CartButton
-                              color="#00b37e"
-                              svgColor="#fff"
-                              product={product}
-                              id={undefined}
-                            />
-                          </footer>
-                        </Product>
-                      </>
-                    );
-                  })}
-                </HomeContainer>
-              </HomeWrapper>
-            )}
-
-            {product.nameId.includes("hoodie") && (
-              <HomeWrapper id="">
-                <h2>Hoodies</h2>
-                <HomeContainer ref={sliderRef} className="keen-slider">
-                  {products.map((product) => {
-                    return (
-                      <>
-                        <Product
-                          className="keen-slider__slide"
-                          key={product.id}
-                        >
-                          <Link
-                            href={`/product/${product.id}`}
-                            prefetch={false}
-                          >
-                            <Image
-                              src={product.imageUrl}
-                              width={520}
-                              height={480}
-                              alt=""
-                            />
-                          </Link>
-
-                          <footer>
-                            <div>
-                              <strong>{product.name}</strong>
-                              <span>{toNumber(product.price)}</span>
-                            </div>
-
-                            <CartButton
-                              color="#00b37e"
-                              svgColor="#fff"
-                              product={product}
-                              id={undefined}
-                            />
-                          </footer>
-                        </Product>
-                      </>
-                    );
-                  })}
-                </HomeContainer>
-              </HomeWrapper>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </MainHolder>
       {/* <MainHolder>
         <HomeWrapper id="">
