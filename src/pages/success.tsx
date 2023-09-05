@@ -47,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         destination: "/",
         permanent: false,
       },
+      fallback: true,
     };
   }
 
