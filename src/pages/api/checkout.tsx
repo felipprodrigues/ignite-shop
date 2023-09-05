@@ -1,3 +1,4 @@
+import { stripe } from "@/lib/stripe";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -13,10 +14,6 @@ export default async function handler(
   if (!priceId) {
     return res.status(400).json({ error: "Price not found." });
   }
-
-  // Set the Stripe API key as the Authorization header
-  const stripeApiKey = process.env.STRIPE_SECRET_KEY;
-  const stripe = require("stripe")(stripeApiKey);
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${process.env.NEXT_URL}/`;

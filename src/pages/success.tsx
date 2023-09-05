@@ -41,8 +41,6 @@ export default function Success({ customerName, product }: SuccessProps) {
 
 // getServerSideProps
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
   if (!query.session_id) {
     return {
       redirect: {
