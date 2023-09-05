@@ -8,7 +8,6 @@ import Link from "next/link";
 import Stripe from "stripe";
 
 export default function Success({ customerName, product }: SuccessProps) {
-  console.log(product, "aqui");
   return (
     <>
       <Head>
