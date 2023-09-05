@@ -40,7 +40,7 @@ export default function Sidepanel() {
 
       <div>
         <ProductDetails>
-          <h2>Sacola de compras</h2>
+          <h2>Shopping Cart</h2>
           {cart.map((product: any) => {
             return (
               <>
@@ -59,9 +59,7 @@ export default function Sidepanel() {
 
                     <span>{toNumber(product.price)}</span>
 
-                    <a onClick={() => removeItemFromCart(product.id)}>
-                      Remover
-                    </a>
+                    <a onClick={() => removeItemFromCart(product.id)}>Remove</a>
                   </ProductInfo>
                 </div>
               </>
@@ -71,11 +69,11 @@ export default function Sidepanel() {
 
         <ProductCheckout>
           <div>
-            <span>Quantidade</span>
+            <span>Quantity</span>
             <span>{cart.length} items</span>
           </div>
           <div>
-            <span>Valor total</span>
+            <span>Total amount</span>
             <h2>{cartTotalPrice}</h2>
           </div>
 
@@ -83,7 +81,7 @@ export default function Sidepanel() {
             onClick={handleBuyProduct}
             disabled={isCreatingCheckoutSession}
           >
-            Finalizar compra
+            Buy
           </button>
         </ProductCheckout>
       </div>

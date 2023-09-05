@@ -8,27 +8,33 @@ import Link from "next/link";
 import Stripe from "stripe";
 
 export default function Success({ customerName, product }: SuccessProps) {
+  console.log(product, "aqui");
   return (
     <>
       <Head>
-        <title>Compra efetuada | Ignite Shop</title>
+        <title>Successful Purchase | Ignite Shop</title>
 
         <meta name="robots" content="noindex" />
       </Head>
 
       <SuccessContainer>
-        <h1>Compra efetuada!</h1>
+        <h1>Success!</h1>
 
         <ImageContainer>
           <Image src={product.imageUrl} alt={""} width={120} height={110} />
         </ImageContainer>
 
         <p>
-          Uhuul <strong>{customerName}</strong>, sua{" "}
-          <strong>{product.name}</strong> já está a caminho da sua casa.
+          Uhuul <strong>{customerName}</strong>, your{" "}
+          <strong>
+            {product.name.length > 1
+              ? `${product.name.length} items`
+              : product.name}
+          </strong>{" "}
+          {product.name.length > 1 ? "are" : "is"} on the way.
         </p>
 
-        <Link href="/">Voltar ao catálogo</Link>
+        <Link href="/">Back to catalog</Link>
       </SuccessContainer>
     </>
   );
@@ -51,6 +57,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     expand: ["line_items", "line_items.data.price.product"],
   });
 
+  const listItems = session?.line_items?.data.map(
+    (product) => product?.description
+  );
+
   const customerName = session.customer_details?.name;
 
   const product = session?.line_items?.data[0]?.price
@@ -60,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       customerName,
       product: {
-        name: product.name,
+        name: listItems,
         imageUrl: product.images[0],
       },
     },

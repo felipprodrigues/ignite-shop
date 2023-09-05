@@ -2,9 +2,15 @@ import { styled } from "..";
 
 export const ProductContainer = styled("main", {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: "1fr",
   alignItems: "stretch",
   gap: "4rem",
+  justifyItems: "center",
+
+  "@media(min-width: 1200px)": {
+    gridTemplateColumns: "1fr 1fr",
+    justifyItems: "unset",
+  },
 
   maxWidth: 1180,
   margin: "0 auto",
@@ -14,8 +20,7 @@ export const ImageContainer = styled("div", {
   width: "100%",
   maxWidth: 576,
   height: "calc(656 - .5rem)",
-  background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%",
-  borderRadius: 8,
+
   padding: ".25rem",
 
   display: "flex",
@@ -24,6 +29,13 @@ export const ImageContainer = styled("div", {
 
   img: {
     objectFit: "cover",
+    width: "280px",
+    height: "240px",
+
+    "@media(min-width: 1024px)": {
+      width: "520px",
+      height: "480px",
+    },
   },
 });
 
@@ -32,7 +44,7 @@ export const ProductDetails = styled("div", {
   flexDirection: "column",
 
   h1: {
-    fontSize: "$2xl",
+    fontSize: "$xl",
     color: "$gray300",
   },
 
@@ -45,13 +57,12 @@ export const ProductDetails = styled("div", {
 
   p: {
     marginTop: "2.5rem",
-    fontSize: "$md",
+    fontSize: "$sm",
     lineHeight: "1.6",
     color: "$gray300",
   },
 
   button: {
-    marginTop: "auto",
     backgroundColor: "$green500",
     border: 0,
     color: "$white",
@@ -61,6 +72,12 @@ export const ProductDetails = styled("div", {
     fontWeight: "bold",
     fontSize: "$md",
     transition: "all .07s linear",
+
+    marginTop: "1.5rem",
+
+    "@media(min-width: 1024px)": {
+      marginTop: "auto",
+    },
 
     "&:disabled": {
       opacity: 0.6,

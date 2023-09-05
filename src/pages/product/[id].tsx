@@ -22,9 +22,6 @@ import { CartContext } from "../_app";
 // Helpers
 import toNumber from "../../helpers/transformToNumber";
 
-// Interfaces
-// import { HomeProps } from "../../interfaces";
-
 export default function Product({ product }: any) {
   const { handleAddItemToCart, isCreatingCheckoutSession } =
     useContext(CartContext);
@@ -56,7 +53,7 @@ export default function Product({ product }: any) {
             disabled={isCreatingCheckoutSession}
             onClick={() => handleAddItemToCart(product)}
           >
-            Colocar na sacola
+            Add to cart
           </button>
         </ProductDetails>
       </ProductContainer>
