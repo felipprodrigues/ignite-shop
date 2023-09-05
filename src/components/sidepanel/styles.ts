@@ -1,18 +1,26 @@
 import { styled } from "@stitches/react";
 
 export const Container = styled("aside", {
-  maxWidth: "30%",
   width: "100%",
   padding: "2rem",
   height: "100vh",
   gap: "1rem",
 
+  maxWidth: "70%",
+
+  "@media(min-width: 1024px)": {
+    maxWidth: "50%",
+  },
+
+  "@media(min-width: 1200px)": {
+    maxWidth: "30%",
+  },
+
   background: "$gray800",
 
-  // display: "flex",
   flexDirection: "column",
 
-  position: "absolute",
+  position: "fixed",
   right: 0,
   zIndex: 1,
 
@@ -52,6 +60,10 @@ export const ProductDetails = styled("div", {
     display: "flex",
     gap: "1rem",
   },
+
+  h2: {
+    fontSize: "$lg",
+  },
 });
 
 export const ProductImage = styled("div", {
@@ -65,7 +77,7 @@ export const ProductInfo = styled("div", {
   justifyContent: "space-between",
 
   span: {
-    fontSize: "$lg",
+    fontSize: "$md",
   },
 
   "span:first-of-type": {
@@ -100,7 +112,7 @@ export const ProductCheckout = styled("div", {
     justifyContent: "space-between",
 
     span: {
-      fontSize: "$md",
+      fontSize: "$sm",
     },
 
     "span:not(:last-of-type)": {
@@ -112,6 +124,10 @@ export const ProductCheckout = styled("div", {
     "span, h2": {
       fontWeight: "bold",
       color: "$white",
+    },
+
+    h2: {
+      fontSize: "$lg",
     },
   },
 

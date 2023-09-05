@@ -23,9 +23,10 @@ export const {
       green300: "#00b37e",
     },
     fontSizes: {
-      md: "1.125rem",
-      lg: "1.25rem",
-      xl: "1.5rem",
+      sm: "clamp(0.875rem, 3vw, 1.125rem)",
+      md: "clamp(1.125rem, 3vw, 1.25rem)",
+      lg: "clamp(1.25rem, 3vw, 1.5rem)",
+      xl: "clamp(1.5rem, 3vw, 2rem)",
       "2xl": "2rem",
     },
   },
