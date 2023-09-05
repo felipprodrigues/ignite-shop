@@ -1,8 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This README provides an overview of the technologies and libraries used in this project stack, as well as important considerations for integrating with Stripe.
 
 ## Getting Started
+First, clone the repo
 
-First, run the development server:
+Second, run the development server:
 
 ```bash
 npm run dev
@@ -14,25 +15,29 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Project Stack and Stripe Integration
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Project Stack
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Our project utilizes a carefully selected stack of technologies and libraries to ensure the development of a robust web application. This stack is designed to offer security, efficiency, and a user-friendly experience. Here are the key components of our stack:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **@stitches/react** (Version 1.2.8): A CSS-in-JS library for styling React components.
+- **axios** (Version 1.4.0): A promise-based HTTP client for making API requests.
+- **keen-slider** (Version 6.8.6): A responsive touch slider library for creating interactive components.
+- **next** (Version 13.4.12): A React framework for building server-rendered web applications.
+- **phosphor-react** (Version 1.4.1): A set of high-quality icons as React components.
+- **react-toastify** (Version 9.1.3): A library for displaying toast notifications in React applications.
+- **stripe** (Version 12.17.0): An integration with Stripe, a payment processing platform.
+- **typescript** (Version 5.1.6): A strongly-typed superset of JavaScript for enhanced code reliability.
 
-## Learn More
+## Stripe Integration
 
-To learn more about Next.js, take a look at the following resources:
+This application is integrated with Stripe for secure payment processing. It's important to note that when working with Stripe, there are two modes: **development** and **live mode**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Development Mode**: During development, we use Stripe's development keys. These keys are safe to use for testing and development purposes. You can find more information on Stripe's development keys [here](https://stripe.com/docs/keys). Please be aware that while development mode works locally, it will not function in the production environment.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Live Mode**: In the live environment, we use Stripe's live keys. It is crucial to keep these keys confidential and never expose them in your codebase or publicly. Revealing live keys can lead to sensitive user data exposure and potential security risks.
 
-## Deploy on Vercel
+Ensure that you switch between development and live modes appropriately in your Stripe integration to maintain the security and privacy of user data when transitioning from development to production environments.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Feel free to refer to Stripe's documentation for more details on handling keys and securely integrating Stripe into your application.
