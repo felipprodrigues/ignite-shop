@@ -125,6 +125,8 @@ export default function Home({ products }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
   const response = await stripe.products.list({
     limit: 100,
     expand: ["data.default_price"],
