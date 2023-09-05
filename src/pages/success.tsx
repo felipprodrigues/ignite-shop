@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   });
 
   const listItems = session?.line_items?.data.map(
-    (product) => product?.description
+    (product: { description: any }) => product?.description
   );
 
   const customerName = session.customer_details?.name;

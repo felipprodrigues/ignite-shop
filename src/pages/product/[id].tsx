@@ -83,6 +83,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
     };
   }
 
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
   const product = await stripe.products.retrieve(productId, {
     expand: ["default_price"],
   });
